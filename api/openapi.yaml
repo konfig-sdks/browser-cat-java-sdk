@@ -1,0 +1,5101 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@browsercat.com
+    name: BrowserCat Support
+    url: https://www.browsercat.com/contact
+  description: Providing purr-fect headless browser access via utility endpoints and
+    direct websocket connections.
+  termsOfService: https://www.browsercat.com/terms-of-service
+  title: BrowserCat API
+  version: 1.0.0
+externalDocs:
+  description: BrowserCat Docs
+  url: https://www.browsercat.com/docs
+servers:
+- url: https://api.browsercat.com
+security:
+- jwtCookie: []
+- keyHeader: []
+tags:
+- description: API key management
+  name: API Keys
+- description: Account billing & payments
+  name: Billing
+- description: Account usage & metrics
+  name: Usage
+- description: OpenAPI utilities
+  name: OpenAPI
+- description: Server status
+  name: Server
+- description: Direct browser access
+  name: Browsers
+paths:
+  /health:
+    get:
+      description: Lightweight endpoint to check server health.
+      operationId: Server_checkHealthStatus
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerCheckHealthStatusResponse'
+          description: Server Status
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerCheckHealthStatus404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerCheckHealthStatus500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security: []
+      summary: Show server health
+      tags:
+      - Server
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--health
+      x-accepts: application/json
+  /metrics:
+    get:
+      description: Returns server metrics in Prometheus format. Use this endpoint
+        to monitor server health.
+      operationId: Server_showMetrics
+      responses:
+        "200":
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerShowMetricsResponse'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerShowMetrics500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security: []
+      summary: Show server metrics
+      tags:
+      - Server
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--metrics
+      x-accepts: application/json
+  /openapi:
+    get:
+      description: "Open OpenAPI docs explorer. Easily explore functionality, request\
+        \ formats, and response types."
+      operationId: OpenApi_exploreFunctionality
+      responses:
+        "200":
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/OpenApiExploreFunctionalityResponse'
+          description: OpenAPI HTML
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenApiExploreFunctionality500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security: []
+      summary: Open OpenAPI docs
+      tags:
+      - OpenAPI
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--openapi
+      x-accepts: application/json
+  /openapi.json:
+    get:
+      description: "Retrieve API spec in JSON format. Use this format to generate\
+        \ types, clients, and mocks in your language of choice."
+      operationId: OpenApi_getSpecJson
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenApiGetSpecJsonResponse'
+          description: OpenAPI JSON
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenApiGetSpecJson500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security: []
+      summary: Retrieve API spec as JSON
+      tags:
+      - OpenAPI
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--openapi.json
+      x-accepts: application/json
+  /openapi.yaml:
+    get:
+      description: "Retrieve API spec in YAML format. Use this format to generate\
+        \ types, clients, and mocks in your language of choice."
+      operationId: OpenApi_getYamlSpec
+      responses:
+        "200":
+          content:
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/OpenApiGetYamlSpecResponse'
+          description: OpenAPI YAML
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpenApiGetYamlSpec500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      security: []
+      summary: Retrieve API spec as YAML
+      tags:
+      - OpenAPI
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--openapi.yaml
+      x-accepts: application/json
+  /connect:
+    get:
+      description: Create a websocket connection to a headless browser. Currently
+        only supports Playwright.
+      operationId: Browsers_establishConnection
+      parameters:
+      - explode: true
+        in: query
+        name: region
+        required: false
+        schema:
+          enum:
+          - ams
+          - iad
+          - atl
+          - bog
+          - bos
+          - otp
+          - maa
+          - ord
+          - dfw
+          - den
+          - eze
+          - fra
+          - gdl
+          - hkg
+          - jnb
+          - lhr
+          - lax
+          - mad
+          - mia
+          - yul
+          - bom
+          - cdg
+          - phx
+          - qro
+          - gig
+          - sjc
+          - scl
+          - gru
+          - sea
+          - ewr
+          - sin
+          - arn
+          - syd
+          - nrt
+          - yyz
+          - waw
+          type: string
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrowsersEstablishConnectionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrowsersEstablishConnection401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrowsersEstablishConnection403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrowsersEstablishConnection500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Connect to a browser
+      tags:
+      - Browsers
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--connect
+      x-accepts: application/json
+  /auth/keys:
+    get:
+      description: List all API keys.
+      operationId: ApiKeys_listAll
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPublicList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysListAllResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysListAll401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysListAll403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysListAll500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List API keys
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--auth-keys
+      x-accepts: application/json
+    post:
+      description: Create a new API key.
+      operationId: ApiKeys_createApiKey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyPost'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeySecret'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysCreateApiKeyResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysCreateApiKey401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysCreateApiKey403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysCreateApiKey500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Create an API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--auth-keys
+      x-content-type: application/json
+      x-accepts: application/json
+  /auth/keys/{keyId}:
+    delete:
+      description: Revoke an API key.
+      operationId: ApiKeys_revokeKey
+      parameters:
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          $ref: '#/components/schemas/KeyId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPublic'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysRevokeKeyResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysRevokeKey401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysRevokeKey403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysRevokeKey404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysRevokeKey500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Revoke an API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--auth-keys-keyId
+      x-accepts: application/json
+    get:
+      description: Retrieve an API key.
+      operationId: ApiKeys_getKey
+      parameters:
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          $ref: '#/components/schemas/KeyId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPublic'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysGetKeyResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysGetKey401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysGetKey403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysGetKey404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysGetKey500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Retrieve an API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--auth-keys-keyId
+      x-accepts: application/json
+    patch:
+      description: Patch an API key.
+      operationId: ApiKeys_updateKey
+      parameters:
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          $ref: '#/components/schemas/KeyId'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyPatch'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPublic'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateKeyResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateKey401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateKey403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateKey404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateKey500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Patch an API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--auth-keys-keyId
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      description: Update an API key.
+      operationId: ApiKeys_updateApiKey
+      parameters:
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          $ref: '#/components/schemas/KeyId'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyPut'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPublic'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateApiKeyResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateApiKey401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateApiKey403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateApiKey404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeysUpdateApiKey500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Update an API key
+      tags:
+      - API Keys
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-put--auth-keys-keyId
+      x-content-type: application/json
+      x-accepts: application/json
+  /usage/buckets:
+    get:
+      description: List account usage within a time range.
+      operationId: Usage_listAggregateAccountUsage
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-buckets-get-parameters-0-schema
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-buckets-get-parameters-1-schema
+        style: form
+      - explode: true
+        in: query
+        name: afterDate
+        required: false
+        schema:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: beforeDate
+        required: false
+        schema:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: unit
+        required: false
+        schema:
+          enum:
+          - minute
+          - hour
+          - day
+          - week
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          maxLength: 128
+          minLength: 0
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: keyId
+        required: false
+        schema:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: method
+        required: false
+        schema:
+          enum:
+          - api
+          - ws
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: endpoint
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageBucketList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListAggregateAccountUsageResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListAggregateAccountUsage401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListAggregateAccountUsage403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListAggregateAccountUsage500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List aggregate account usage
+      tags:
+      - Usage
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--usage-buckets
+      x-accepts: application/json
+  /usage/sessions:
+    get:
+      description: List all sessions within a time range.
+      operationId: Usage_getSessionRange
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-get-parameters-0-schema
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-get-parameters-1-schema
+        style: form
+      - explode: true
+        in: query
+        name: afterDate
+        required: false
+        schema:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: beforeDate
+        required: false
+        schema:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSessionPublicList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetSessionRangeResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetSessionRange401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetSessionRange403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetSessionRange500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List sessions within range
+      tags:
+      - Usage
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--usage-sessions
+      x-accepts: application/json
+  /usage/sessions/{sessionId}:
+    get:
+      description: Retrieve data for a particular request.
+      operationId: Usage_getRequestData
+      parameters:
+      - explode: false
+        in: path
+        name: sessionId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UsageSessionId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSessionPublic'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetRequestDataResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetRequestData401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetRequestData403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetRequestData404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetRequestData500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Retrieve data for a request
+      tags:
+      - Usage
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId
+      x-accepts: application/json
+  /usage/sessions/{sessionId}/events:
+    get:
+      description: List all events within a particular request.
+      operationId: Usage_listRequestEvents
+      parameters:
+      - explode: false
+        in: path
+        name: sessionId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UsageSessionId'
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-1-schema
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-2-schema
+        style: form
+      - explode: true
+        in: query
+        name: afterDate
+        required: false
+        schema:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: beforeDate
+        required: false
+        schema:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageEventList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListRequestEventsResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListRequestEvents401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListRequestEvents403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageListRequestEvents500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List events for a request
+      tags:
+      - Usage
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId-events
+      x-accepts: application/json
+  /usage/sessions/{sessionId}/events/{eventId}:
+    get:
+      description: Retrieve a particular event for a request.
+      operationId: Usage_getEventData
+      parameters:
+      - explode: false
+        in: path
+        name: sessionId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UsageSessionId'
+        style: simple
+      - explode: false
+        in: path
+        name: eventId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UsageEventId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageEvent'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetEventDataResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetEventData401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetEventData403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetEventData404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageGetEventData500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Retrieve data for an event
+      tags:
+      - Usage
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId-events-eventId
+      x-accepts: application/json
+  /billing/subscriptions:
+    get:
+      description: List all current and previous subscriptions within a given time
+        range.
+      operationId: Billing_listSubscriptionsWithinRange
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-subscriptions-get-parameters-0-schema
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-subscriptions-get-parameters-1-schema
+        style: form
+      - explode: true
+        in: query
+        name: afterDate
+        required: false
+        schema:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: beforeDate
+        required: false
+        schema:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListSubscriptionsWithinRangeResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListSubscriptionsWithinRange401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListSubscriptionsWithinRange403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListSubscriptionsWithinRange500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List subscriptions within range
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-subscriptions
+      x-accepts: application/json
+  /billing/subscriptions/current:
+    get:
+      description: "Get the primary, active subscription."
+      operationId: Billing_getActiveSubscription
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetActiveSubscriptionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetActiveSubscription401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetActiveSubscription403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetActiveSubscription404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetActiveSubscription500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Get active subscription
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-subscriptions-current
+      x-accepts: application/json
+  /billing/subscriptions/{subId}:
+    get:
+      description: Get specific subscription details.
+      operationId: Billing_getSpecificSubscription
+      parameters:
+      - explode: false
+        in: path
+        name: subId
+        required: true
+        schema:
+          $ref: '#/components/schemas/SubId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificSubscriptionResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificSubscription401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificSubscription403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificSubscription404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificSubscription500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Get specific subscription
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-subscriptions-subId
+      x-accepts: application/json
+  /billing/invoices:
+    get:
+      description: List all invoices (including failed and refunds) within a given
+        time range.
+      operationId: Billing_listInvoicesRange
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-invoices-get-parameters-0-schema
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-invoices-get-parameters-1-schema
+        style: form
+      - explode: true
+        in: query
+        name: afterDate
+        required: false
+        schema:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: beforeDate
+        required: false
+        schema:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceList'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListInvoicesRangeResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListInvoicesRange401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListInvoicesRange403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingListInvoicesRange500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: List invoices within range
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-invoices
+      x-accepts: application/json
+  /billing/invoices/{invId}:
+    get:
+      description: Get specific invoice info.
+      operationId: Billing_getSpecificInvoice
+      parameters:
+      - explode: false
+        in: path
+        name: invId
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificInvoiceResponse'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificInvoice401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificInvoice403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificInvoice404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetSpecificInvoice500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Get specific invoice
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-invoices-invId
+      x-accepts: application/json
+  /billing/invoices/{invId}.pdf:
+    get:
+      description: Get specific invoice PDF.
+      operationId: Billing_getInvoicePdf
+      parameters:
+      - explode: false
+        in: path
+        name: invId
+        required: true
+        schema:
+          $ref: '#/components/schemas/InvId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdfResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdf400Response'
+          description: Bad Request
+          x-do-not-generate: true
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdf401Response'
+          description: Unauthorized
+          x-do-not-generate: true
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdf403Response'
+          description: Forbidden
+          x-do-not-generate: true
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdf404Response'
+          description: Not Found
+          x-do-not-generate: true
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingGetInvoicePdf500Response'
+          description: Internal Server Error
+          x-do-not-generate: true
+      summary: Get PDF receipt for specific invoice
+      tags:
+      - Billing
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--billing-invoices-invId.pdf
+      x-accepts: application/json
+components:
+  parameters: {}
+  schemas:
+    BadRequestError:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            $ref: '#/components/schemas/BadRequestError_fields_inner'
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+    NotFoundError:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    UnauthorizedError:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    ForbiddenError:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    PaymentRequiredError:
+      properties:
+        status:
+          enum:
+          - 402
+          type: number
+        error:
+          enum:
+          - Payment Required
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    TooManyRequestsError:
+      properties:
+        status:
+          enum:
+          - 429
+          type: number
+        error:
+          enum:
+          - Too Many Requests
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    InternalServerErrorError:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    ServiceUnavailableError:
+      properties:
+        status:
+          enum:
+          - 503
+          type: number
+        error:
+          enum:
+          - Service Unavailable
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    ProxyAuthenticationRequiredError:
+      properties:
+        status:
+          enum:
+          - 407
+          type: number
+        error:
+          enum:
+          - Proxy Authentication Required
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    BadGatewayError:
+      properties:
+        status:
+          enum:
+          - 502
+          type: number
+        error:
+          enum:
+          - Bad Gateway
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    GatewayTimeoutError:
+      properties:
+        status:
+          enum:
+          - 504
+          type: number
+        error:
+          enum:
+          - Gateway Timeout
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+    KeyId:
+      description: Key ID
+      type: string
+    KeyPublic:
+      example:
+        lastFour: lastFour
+        expiredAt: 2000-01-23T04:56:07.000+00:00
+        role: member
+        name: name
+        keyId: keyId
+      properties:
+        keyId:
+          description: Key ID
+          type: string
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        lastFour:
+          maxLength: 4
+          minLength: 4
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - expiredAt
+      - keyId
+      - lastFour
+      - name
+      - role
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    KeyPublicList:
+      items:
+        $ref: '#/components/schemas/KeyPublic'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    KeySecret:
+      example:
+        lastFour: lastFour
+        expiredAt: 2000-01-23T04:56:07.000+00:00
+        role: member
+        name: name
+        keyId: keyId
+        secret: secret
+      properties:
+        keyId:
+          description: Key ID
+          type: string
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        lastFour:
+          maxLength: 4
+          minLength: 4
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+        secret:
+          type: string
+      required:
+      - expiredAt
+      - keyId
+      - lastFour
+      - name
+      - role
+      - secret
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    KeyPost:
+      example:
+        expiredAt: 2000-01-23T04:56:07.000+00:00
+        role: member
+        name: name
+      properties:
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - name
+      type: object
+    KeyPut:
+      example:
+        expiredAt: 2000-01-23T04:56:07.000+00:00
+        role: member
+        name: name
+      properties:
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - expiredAt
+      - name
+      - role
+      type: object
+    KeyPatch:
+      example:
+        expiredAt: 2000-01-23T04:56:07.000+00:00
+        role: member
+        name: name
+      properties:
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      type: object
+    UsageBucket:
+      example:
+        method: api
+        clerkUserId: ""
+        durationMean: 9
+        keyId: ""
+        countFailure: 1
+        usageBucketId: usageBucketId
+        durationFailure: 5
+        clerkOrgId: ""
+        durationStd: 3
+        bucket: 2000-01-23T04:56:07.000+00:00
+        durationMax: 7
+        endpoint: endpoint
+        credits: 0
+        durationSuccess: 5
+        countSuccess: 6
+        durationMin: 2
+      properties:
+        usageBucketId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        keyId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+        clerkOrgId:
+          maxLength: 128
+          minLength: 0
+        clerkUserId:
+          maxLength: 128
+          minLength: 0
+        bucket:
+          format: date-time
+          type: string
+        method:
+          enum:
+          - api
+          - ws
+          type: string
+        endpoint:
+          type: string
+        credits:
+          type: integer
+        countSuccess:
+          type: integer
+        countFailure:
+          type: integer
+        durationSuccess:
+          type: integer
+        durationFailure:
+          type: integer
+        durationMin:
+          type: integer
+        durationMax:
+          type: integer
+        durationMean:
+          type: integer
+        durationStd:
+          type: integer
+      required:
+      - bucket
+      - clerkOrgId
+      - clerkUserId
+      - countFailure
+      - countSuccess
+      - credits
+      - durationFailure
+      - durationMax
+      - durationMean
+      - durationMin
+      - durationStd
+      - durationSuccess
+      - endpoint
+      - keyId
+      - method
+      - usageBucketId
+      type: object
+    UsageBucketList:
+      items:
+        $ref: '#/components/schemas/UsageBucket'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    UsageSessionId:
+      description: UsageSession ID
+      type: string
+    UsageSessionPublic:
+      example:
+        usageSessionId: usageSessionId
+        agentType: playwright
+        method: api
+        clerkUserId: ""
+        keyId: ""
+        startedAt: 2000-01-23T04:56:07.000+00:00
+        sessionId: sessionId
+        clerkOrgId: ""
+        machineRegion: machineRegion
+        browserType: chromium
+        endpoint: endpoint
+        machineId: machineId
+        endedAt: ""
+        browserVersion: browserVersion
+        agentVersion: agentVersion
+        status: pending
+      properties:
+        usageSessionId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        clerkOrgId:
+          maxLength: 128
+          minLength: 0
+        clerkUserId:
+          maxLength: 128
+          minLength: 0
+        keyId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+        method:
+          enum:
+          - api
+          - ws
+          type: string
+        endpoint:
+          type: string
+        status:
+          enum:
+          - pending
+          - success
+          - failure
+          type: string
+        machineId:
+          maxLength: 64
+          type: string
+        machineRegion:
+          maxLength: 64
+          type: string
+        browserType:
+          enum:
+          - chromium
+          - firefox
+          - webkit
+          - chrome
+          - chrome-beta
+          - msedge
+          - msedge-beta
+          - msedge-dev
+          type: string
+        browserVersion:
+          maxLength: 64
+          type: string
+        agentType:
+          enum:
+          - playwright
+          - puppeteer
+          - selenium
+          type: string
+        agentVersion:
+          maxLength: 64
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        endedAt:
+          format: date-time
+        sessionId:
+          description: UsageSession ID
+          type: string
+      required:
+      - agentType
+      - agentVersion
+      - browserType
+      - browserVersion
+      - clerkOrgId
+      - clerkUserId
+      - endedAt
+      - endpoint
+      - keyId
+      - machineId
+      - machineRegion
+      - method
+      - sessionId
+      - startedAt
+      - status
+      - usageSessionId
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    UsageSessionPublicList:
+      items:
+        $ref: '#/components/schemas/UsageSessionPublic'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    UsageEventId:
+      description: UsageEvent ID
+      type: string
+    UsageEvent:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        eventId: eventId
+        usageSessionId: usageSessionId
+        data: ""
+        usageEventId: usageEventId
+        sentAt: 2000-01-23T04:56:07.000+00:00
+        sessionId: sessionId
+        type: type
+        status: pending
+      properties:
+        usageEventId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        usageSessionId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        type:
+          maxLength: 64
+          type: string
+        status:
+          enum:
+          - pending
+          - success
+          - failure
+          type: string
+        data: {}
+        sentAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        sessionId:
+          description: UsageSession ID
+          type: string
+        eventId:
+          description: UsageEvent ID
+          type: string
+      required:
+      - createdAt
+      - eventId
+      - sentAt
+      - sessionId
+      - status
+      - type
+      - usageEventId
+      - usageSessionId
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    UsageEventList:
+      items:
+        $ref: '#/components/schemas/UsageEvent'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    SubId:
+      description: Subscription ID
+      type: string
+    Subscription:
+      example:
+        periodStartsAt: 2000-01-23T04:56:07.000+00:00
+        periodEndsAt: 2000-01-23T04:56:07.000+00:00
+        pausedAt: ""
+        periodUnit: day
+        subId: subId
+        anchoredAt: 2000-01-23T04:56:07.000+00:00
+        tier: hobby
+        canceledAt: ""
+        periodCount: 1
+        resumedAt: ""
+        currency: currency
+        stripeSubId: stripeSubId
+        stripeCusId: ""
+        status: incomplete
+      properties:
+        subId:
+          description: Subscription ID
+          type: string
+        tier:
+          enum:
+          - hobby
+          - business
+          - enterprise
+          type: string
+        status:
+          enum:
+          - incomplete
+          - incomplete_expired
+          - active
+          - trialing
+          - past_due
+          - unpaid
+          - canceled
+          - paused
+          type: string
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+        periodUnit:
+          enum:
+          - day
+          - week
+          - month
+          - year
+          type: string
+        periodCount:
+          minimum: 1
+          type: integer
+        periodStartsAt:
+          format: date-time
+          type: string
+        periodEndsAt:
+          format: date-time
+          type: string
+        anchoredAt:
+          format: date-time
+          type: string
+        canceledAt:
+          format: date-time
+        resumedAt:
+          format: date-time
+        pausedAt:
+          format: date-time
+        stripeSubId:
+          type: string
+        stripeCusId: {}
+      required:
+      - anchoredAt
+      - canceledAt
+      - currency
+      - pausedAt
+      - periodCount
+      - periodEndsAt
+      - periodStartsAt
+      - periodUnit
+      - resumedAt
+      - status
+      - stripeCusId
+      - stripeSubId
+      - subId
+      - tier
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    SubscriptionList:
+      items:
+        $ref: '#/components/schemas/Subscription'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    InvId:
+      description: Invoice ID
+      type: string
+    Invoice:
+      example:
+        error: ""
+        subId: ""
+        amountDue: 0
+        totalTax: 0
+        total: 0
+        amountPaid: 0
+        invId: invId
+        billedAt: 2000-01-23T04:56:07.000+00:00
+        totalDiscount: 0
+        currency: currency
+        stripeSubId: ""
+        stripeInvId: stripeInvId
+        stripeCusId: ""
+        status: draft
+      properties:
+        invId:
+          description: Invoice ID
+          type: string
+        subId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+        status:
+          enum:
+          - draft
+          - open
+          - void
+          - paid
+          - uncollectible
+          type: string
+        error: {}
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+        amountDue:
+          minimum: 0
+          type: integer
+        amountPaid:
+          minimum: 0
+          type: integer
+        total:
+          minimum: 0
+          type: integer
+        totalDiscount:
+          minimum: 0
+          type: integer
+        totalTax:
+          minimum: 0
+          type: integer
+        billedAt:
+          format: date-time
+          type: string
+        stripeInvId:
+          type: string
+        stripeSubId: {}
+        stripeCusId: {}
+      required:
+      - amountDue
+      - amountPaid
+      - billedAt
+      - currency
+      - error
+      - invId
+      - status
+      - stripeCusId
+      - stripeInvId
+      - stripeSubId
+      - subId
+      - total
+      - totalDiscount
+      - totalTax
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    InvoiceList:
+      items:
+        $ref: '#/components/schemas/Invoice'
+      type: array
+      x-konfig-is-used-in-successful-response: true
+    ServerCheckHealthStatusResponse:
+      example:
+        status: healthy
+        uptime: 0.8008281904610115
+      properties:
+        status:
+          enum:
+          - healthy
+          - degraded
+          - unhealthy
+          type: string
+        uptime:
+          description: Server uptime in seconds
+          type: number
+      required:
+      - status
+      - uptime
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ServerCheckHealthStatus404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ServerCheckHealthStatus500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ServerShowMetricsResponse:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ServerShowMetrics500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    OpenApiExploreFunctionalityResponse:
+      description: OpenAPI HTML
+      type: string
+      x-konfig-is-used-in-successful-response: true
+    OpenApiExploreFunctionality500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    OpenApiGetSpecJsonResponse:
+      additionalProperties: true
+      description: OpenAPI JSON
+      example:
+        openapi: openapi
+      properties:
+        openapi:
+          type: string
+      required:
+      - openapi
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    OpenApiGetSpecJson500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    OpenApiGetYamlSpecResponse:
+      additionalProperties: true
+      description: OpenAPI YAML
+      example:
+        openapi: openapi
+      properties:
+        openapi:
+          type: string
+      required:
+      - openapi
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    OpenApiGetYamlSpec500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BrowsersEstablishConnectionResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BrowsersEstablishConnection401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BrowsersEstablishConnection403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BrowsersEstablishConnection500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysListAllResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysListAll401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysListAll403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysListAll500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysCreateApiKeyResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysCreateApiKey401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysCreateApiKey403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysCreateApiKey500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysRevokeKeyResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysRevokeKey401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysRevokeKey403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysRevokeKey404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysRevokeKey500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysGetKeyResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysGetKey401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysGetKey403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysGetKey404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysGetKey500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateKeyResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateKey401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateKey403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateKey404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateKey500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateApiKeyResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateApiKey401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateApiKey403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateApiKey404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    ApiKeysUpdateApiKey500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListAggregateAccountUsageResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListAggregateAccountUsage401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListAggregateAccountUsage403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListAggregateAccountUsage500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetSessionRangeResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetSessionRange401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetSessionRange403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetSessionRange500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetRequestDataResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetRequestData401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetRequestData403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetRequestData404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetRequestData500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListRequestEventsResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListRequestEvents401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListRequestEvents403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageListRequestEvents500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetEventDataResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetEventData401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetEventData403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetEventData404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    UsageGetEventData500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListSubscriptionsWithinRangeResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListSubscriptionsWithinRange401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListSubscriptionsWithinRange403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListSubscriptionsWithinRange500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetActiveSubscriptionResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetActiveSubscription401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetActiveSubscription403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetActiveSubscription404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetActiveSubscription500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificSubscriptionResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificSubscription401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificSubscription403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificSubscription404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificSubscription500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListInvoicesRangeResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListInvoicesRange401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListInvoicesRange403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingListInvoicesRange500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificInvoiceResponse:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificInvoice401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificInvoice403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificInvoice404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetSpecificInvoice500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetInvoicePdfResponse:
+      description: Invoice PDF
+      format: binary
+      type: string
+      x-konfig-is-used-in-successful-response: true
+    BillingGetInvoicePdf400Response:
+      properties:
+        status:
+          enum:
+          - 400
+          type: number
+        error:
+          enum:
+          - Bad Request
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+        invalid:
+          description: Where the validation error occurred
+          enum:
+          - body
+          - path
+          - query
+          type: string
+        fields:
+          description: "Validation errors, when available"
+          items:
+            properties:
+              code:
+                type: string
+              expected:
+                type: string
+              received:
+                type: string
+              validation:
+                type: string
+              path:
+                items: {}
+                type: array
+              message:
+                type: string
+            required:
+            - code
+            - path
+            type: object
+          type: array
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetInvoicePdf401Response:
+      properties:
+        status:
+          enum:
+          - 401
+          type: number
+        error:
+          enum:
+          - Unauthorized
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetInvoicePdf403Response:
+      properties:
+        status:
+          enum:
+          - 403
+          type: number
+        error:
+          enum:
+          - Forbidden
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetInvoicePdf404Response:
+      properties:
+        status:
+          enum:
+          - 404
+          type: number
+        error:
+          enum:
+          - Not Found
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    BillingGetInvoicePdf500Response:
+      properties:
+        status:
+          enum:
+          - 500
+          type: number
+        error:
+          enum:
+          - Internal Server Error
+          type: string
+        message:
+          description: Suggestions for debugging the issue
+          type: string
+      required:
+      - error
+      - message
+      - status
+      type: object
+      x-konfig-is-used-in-non-successful-response: true
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-buckets-get-parameters-0-schema:
+      example: 100
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-buckets-get-parameters-1-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-sessions-get-parameters-0-schema:
+      example: 100
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-sessions-get-parameters-1-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-1-schema:
+      example: 100
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-2-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--billing-subscriptions-get-parameters-0-schema:
+      example: 100
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--billing-subscriptions-get-parameters-1-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--billing-invoices-get-parameters-0-schema:
+      example: 100
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-paths--billing-invoices-get-parameters-1-schema:
+      example: 0
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-single-parameter-schema-get--health:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--metrics:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--openapi:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--openapi.json:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--openapi.yaml:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--connect:
+      properties:
+        region:
+          enum:
+          - ams
+          - iad
+          - atl
+          - bog
+          - bos
+          - otp
+          - maa
+          - ord
+          - dfw
+          - den
+          - eze
+          - fra
+          - gdl
+          - hkg
+          - jnb
+          - lhr
+          - lax
+          - mad
+          - mia
+          - yul
+          - bom
+          - cdg
+          - phx
+          - qro
+          - gig
+          - sjc
+          - scl
+          - gru
+          - sea
+          - ewr
+          - sin
+          - arn
+          - syd
+          - nrt
+          - yyz
+          - waw
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - region
+    konfig-generated-schema-single-parameter-schema-get--auth-keys:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-post--auth-keys:
+      properties:
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - name
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-delete--auth-keys-keyId:
+      properties:
+        keyId:
+          $ref: '#/components/schemas/KeyId'
+      required:
+      - keyId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - keyId
+    konfig-generated-schema-single-parameter-schema-get--auth-keys-keyId:
+      properties:
+        keyId:
+          $ref: '#/components/schemas/KeyId'
+      required:
+      - keyId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - keyId
+    konfig-generated-schema-single-parameter-schema-patch--auth-keys-keyId:
+      properties:
+        keyId:
+          $ref: '#/components/schemas/KeyId'
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - keyId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - keyId
+    konfig-generated-schema-single-parameter-schema-put--auth-keys-keyId:
+      properties:
+        keyId:
+          $ref: '#/components/schemas/KeyId'
+        name:
+          maxLength: 128
+          minLength: 0
+          type: string
+        role:
+          enum:
+          - member
+          - admin
+          type: string
+        expiredAt:
+          format: date-time
+          type: string
+      required:
+      - expiredAt
+      - keyId
+      - name
+      - role
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - keyId
+    konfig-generated-schema-single-parameter-schema-get--usage-buckets:
+      properties:
+        limit:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-buckets-get-parameters-0-schema
+        offset:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-buckets-get-parameters-1-schema
+        afterDate:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        beforeDate:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+        unit:
+          enum:
+          - minute
+          - hour
+          - day
+          - week
+          type: string
+        userId:
+          maxLength: 128
+          minLength: 0
+          type: string
+        keyId:
+          pattern: "^[\\da-f]{8}(?:-[\\da-f]{4}){3}-[\\da-f]{12}$"
+          type: string
+        method:
+          enum:
+          - api
+          - ws
+          type: string
+        endpoint:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - afterDate
+      - beforeDate
+      - unit
+      - userId
+      - keyId
+      - method
+      - endpoint
+    konfig-generated-schema-single-parameter-schema-get--usage-sessions:
+      properties:
+        limit:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-get-parameters-0-schema
+        offset:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-get-parameters-1-schema
+        afterDate:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        beforeDate:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - afterDate
+      - beforeDate
+    konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId:
+      properties:
+        sessionId:
+          $ref: '#/components/schemas/UsageSessionId'
+      required:
+      - sessionId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - sessionId
+    konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId-events:
+      properties:
+        sessionId:
+          $ref: '#/components/schemas/UsageSessionId'
+        limit:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-1-schema
+        offset:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--usage-sessions-sessionId-events-get-parameters-2-schema
+        afterDate:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        beforeDate:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+      required:
+      - sessionId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - sessionId
+      - limit
+      - offset
+      - afterDate
+      - beforeDate
+    konfig-generated-schema-single-parameter-schema-get--usage-sessions-sessionId-events-eventId:
+      properties:
+        sessionId:
+          $ref: '#/components/schemas/UsageSessionId'
+        eventId:
+          $ref: '#/components/schemas/UsageEventId'
+      required:
+      - eventId
+      - sessionId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - sessionId
+      - eventId
+    konfig-generated-schema-single-parameter-schema-get--billing-subscriptions:
+      properties:
+        limit:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-subscriptions-get-parameters-0-schema
+        offset:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-subscriptions-get-parameters-1-schema
+        afterDate:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        beforeDate:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - afterDate
+      - beforeDate
+    konfig-generated-schema-single-parameter-schema-get--billing-subscriptions-current:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--billing-subscriptions-subId:
+      properties:
+        subId:
+          $ref: '#/components/schemas/SubId'
+      required:
+      - subId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - subId
+    konfig-generated-schema-single-parameter-schema-get--billing-invoices:
+      properties:
+        limit:
+          default: 100
+          description: Limit the number of results
+          example: 100
+          maximum: 1000
+          minimum: 1
+          type: integer
+          x-konfig-original-example: 100
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-invoices-get-parameters-0-schema
+        offset:
+          default: 0
+          description: Offset the returned results by this many
+          example: 0
+          minimum: 0
+          x-konfig-original-example: 0
+          x-konfig-generated-schema: konfig-generated-schema-paths--billing-invoices-get-parameters-1-schema
+        afterDate:
+          description: Only return results after this date (inclusive)
+          format: date-time
+          type: string
+        beforeDate:
+          description: Only return results before this date (exclusive)
+          format: date-time
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - offset
+      - afterDate
+      - beforeDate
+    konfig-generated-schema-single-parameter-schema-get--billing-invoices-invId:
+      properties:
+        invId:
+          $ref: '#/components/schemas/InvId'
+      required:
+      - invId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - invId
+    konfig-generated-schema-single-parameter-schema-get--billing-invoices-invId.pdf:
+      properties:
+        invId:
+          $ref: '#/components/schemas/InvId'
+      required:
+      - invId
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - invId
+    BadRequestError_fields_inner:
+      properties:
+        code:
+          type: string
+        expected:
+          type: string
+        received:
+          type: string
+        validation:
+          type: string
+        path:
+          items: {}
+          type: array
+        message:
+          type: string
+      required:
+      - code
+      - path
+      type: object
+  securitySchemes:
+    jwtCookie:
+      description: "JWT in cookies. Set cookie \"__SESSION\": \"{jwt}\"."
+      in: cookie
+      name: __SESSION
+      type: apiKey
+      x-konfig-globally-required-security: false
+    jwtHeader:
+      bearerFormat: JWT
+      description: "JWT in header. Set header \"Authorization\": \"Bearer {jwt}\"."
+      scheme: bearer
+      type: http
+      x-konfig-globally-required-security: false
+    keyHeader:
+      description: "API key auth. Set header \"Api-Key\": \"{key}\"."
+      in: header
+      name: Api-Key
+      type: apiKey
+      x-konfig-globally-required-security: false
+
